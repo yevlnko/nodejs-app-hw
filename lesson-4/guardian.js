@@ -18,13 +18,20 @@ class Guardian extends Transform {
 			meta,
 			payload: {
 				...payload,
-				email: Buffer.from(email).toString('hex'),
-				password: Buffer.from(password).toString('hex'),
+				email: this._bcrypt(email),
+				password: this._bcrypt(password),
 			}
 		};
 		
 		this.push(encryptedChunk);
 		done();
+	}
+	
+	/*
+	* =)
+	* */
+	_bcrypt(data) {
+		return Buffer.from(data).toString('hex');
 	}
 	
 	_flush(done) {
