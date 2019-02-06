@@ -1,4 +1,5 @@
 const {Readable} = require('stream');
+const validate = require('./help/validate');
 
 class Ui extends Readable {
 	constructor(data, options = {}) {
@@ -14,7 +15,7 @@ class Ui extends Readable {
 			this.push(null);
 		} else {
 			
-			data = {
+			const modifyData = {
 				meta: {
 					source: 'ui',
 				},
@@ -23,7 +24,15 @@ class Ui extends Readable {
 				}
 			};
 			
-			this.push(data);
+			const validateData = {
+				data: modifyData,
+				name: 'Ui',
+				instance: this,
+			};
+			
+			validate(validateData);
+			
+			this.push(modifyData);
 		}
 	}
 }

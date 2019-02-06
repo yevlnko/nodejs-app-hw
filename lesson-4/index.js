@@ -33,16 +33,16 @@ const manager = new AccountManager(writeOptions);
 ui.pipe(guardian).pipe(manager);
 
 ui.on('error', ({message}) => {
-	console.log(message);
-	process.exit(1);
-})
-.pipe(guardian)
-.on('error', ({message}) => {
-	console.log(message);
-	process.exit(1);
-})
-.pipe(accountManager)
-.on('error', ({message}) => {
-	console.log(message);
-	process.exit(1);
-});
+		console.log(message);
+		process.exit(1);
+	})
+	.pipe(guardian)
+	.on('error', ({message}) => {
+		console.log(message);
+		process.exit(1);
+	})
+	.pipe(manager)
+	.on('error', ({message}) => {
+		console.log(message);
+		process.exit(1);
+	});
