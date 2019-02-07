@@ -1,6 +1,8 @@
 const Ui = require('./ui');
 const Guardian = require('./guardian');
 const AccountManager = require('./manager');
+const Logger = require('./logger');
+const Db = require('./db');
 
 const customers = [
 	{
@@ -30,6 +32,14 @@ const writeOptions = {
 };
 const manager = new AccountManager(writeOptions);
 
+const db = new Db();
+
+const loggerOptions = {
+	objectMode: true
+};
+
+const logger = new Logger(loggerOptions, db);
+
 ui.pipe(guardian).pipe(manager);
 
 ui.on('error', ({message}) => {
@@ -41,8 +51,16 @@ ui.on('error', ({message}) => {
 		console.log(message);
 		process.exit(1);
 	})
+	.pipe(logger)
+	.on('error', ({message}) => {
+		console.log(message);
+		process.exit(1);
+	})
 	.pipe(manager)
 	.on('error', ({message}) => {
 		console.log(message);
 		process.exit(1);
+	})
+	.on('finish', () => {
+		db.print();
 	});

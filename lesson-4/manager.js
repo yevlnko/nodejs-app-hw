@@ -9,7 +9,7 @@ class AccountManager extends Writable {
 		const {
 			payload,
 		} = chunk;
-		console.log(payload);
+		// console.log(payload);
 		done();
 	}
 }
